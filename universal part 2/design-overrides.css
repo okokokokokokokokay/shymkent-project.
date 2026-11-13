@@ -1,0 +1,119 @@
+/* Shymkent Eco visual refresh — link this file after the existing inline <style>. */
+:root {
+  --ease-out: cubic-bezier(.22, 1, .36, 1);
+  --surface-border: rgba(169, 154, 255, .18);
+}
+
+html { scroll-behavior: smooth; }
+body { isolation: isolate; }
+
+/* Give the page more depth without competing with its content. */
+body::before, body::after {
+  animation: ambient-drift 24s ease-in-out infinite alternate;
+  will-change: transform;
+}
+body::after { animation-delay: -12s; }
+@keyframes ambient-drift {
+  from { transform: translate3d(0, 0, 0) scale(.96); }
+  to { transform: translate3d(1.5rem, -1rem, 0) scale(1.04); }
+}
+
+.topbar { transition: background .3s ease, box-shadow .3s ease, border-color .3s ease; }
+.brand-mark { animation: mark-breathe 4s ease-in-out infinite; }
+@keyframes mark-breathe {
+  50% { box-shadow: 0 0 28px rgba(103, 226, 200, .48); transform: scale(1.08); }
+}
+
+.hero { padding-top: clamp(64px, 9vw, 110px); }
+.hero-grid { gap: clamp(28px, 5vw, 56px); }
+.hero > .container, .hero-grid > :first-child { min-width: 0; }
+.eyebrow { backdrop-filter: blur(12px); }
+.display-text { max-width: 12ch; text-wrap: balance; }
+.display-text span {
+  background-size: 180% 180%;
+  animation: gradient-glide 8s ease-in-out infinite alternate;
+}
+@keyframes gradient-glide { to { background-position: 100% 50%; } }
+
+.hero-card, .hero-visual, .card, .impact, .info-box, .panel,
+.action-item, .scenario-card, .scenario-box, .cta-box, .credit-item,
+.site-qr-card, .contact-form {
+  border-color: var(--surface-border);
+  box-shadow: 0 18px 48px var(--shadow);
+}
+.hero-card, .card, .panel, .info-box, .impact, .action-item,
+.scenario-card, .scenario-box, .cta-box, .credit-item {
+  backdrop-filter: blur(14px);
+}
+.hero-visual { isolation: isolate; }
+.hero-visual img { transform-origin: center; }
+.hero-tag { backdrop-filter: blur(16px); }
+
+.button, .icon-btn, .toggle-btn, .qr-copy, .toggle-btn {
+  -webkit-tap-highlight-color: transparent;
+}
+.button { box-shadow: 0 8px 22px rgba(3, 5, 20, .12); }
+.button.primary { background-size: 150% 150%; }
+.button.primary:hover { box-shadow: 0 14px 32px rgba(103, 226, 200, .32); }
+.button:active, .icon-btn:active, .toggle-btn:active { transform: scale(.97); }
+.icon-btn { backdrop-filter: blur(10px); }
+
+section:not(.hero) { position: relative; z-index: 1; padding-block: clamp(32px, 5vw, 58px); }
+.section-head { margin-bottom: clamp(22px, 3vw, 34px); }
+.section-head h2 { line-height: 1.04; }
+.cards, .impact-grid, .info-grid, .actions, .scenario-grid { align-items: stretch; }
+.card, .impact, .info-box, .panel, .action-item, .scenario-card,
+.credit-item, .scenario-box { transition: transform .35s var(--ease-out), box-shadow .35s ease, border-color .35s ease, background .35s ease; }
+.card { background: linear-gradient(145deg, rgba(32, 35, 72, .82), rgba(16, 29, 49, .88)); }
+.card::before { height: 4px; }
+.card::after { transition: opacity .35s ease; }
+.card:hover::after { opacity: .8; }
+.card:hover, .action-item:hover, .impact:hover, .info-box:hover,
+.panel:hover, .scenario-card:hover, .credit-item:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 24px 48px rgba(3, 5, 20, .26);
+  border-color: color-mix(in srgb, var(--primary) 36%, transparent);
+}
+
+.meter > span, .bar > span { transform-origin: left center; }
+.meter > span { animation: meter-fill 1.4s var(--ease-out) both; }
+@keyframes meter-fill { from { transform: scaleX(.12); } to { transform: scaleX(1); } }
+.bar > span { animation: bar-fill 1.1s var(--ease-out) both; }
+@keyframes bar-fill { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+
+.scenario-box { border-radius: 26px; }
+.toggle-btn { transition: transform .2s ease, background .25s ease, box-shadow .25s ease, color .25s ease; }
+.toggle-btn:hover { transform: translateY(-2px); }
+.scenario-panel.active { animation: panel-arrive .4s var(--ease-out) both; }
+@keyframes panel-arrive {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.contact-form, .site-qr-card { backdrop-filter: blur(16px); }
+.contact-form input, .contact-form textarea { transition: border-color .2s ease, box-shadow .2s ease, background .2s ease; }
+.contact-form input:focus, .contact-form textarea:focus { box-shadow: 0 0 0 4px color-mix(in srgb, var(--primary) 18%, transparent); }
+footer { position: relative; z-index: 1; }
+
+/* Keep interactive movement available to keyboard users and avoid motion on touch. */
+@media (hover: hover) and (pointer: fine) {
+  .card, .impact, .info-box, .panel, .action-item, .scenario-card, .credit-item { will-change: transform; }
+}
+@media (max-width: 900px) {
+  .hero-grid { grid-template-columns: 1fr; }
+  .hero-visual { min-height: 390px; }
+  .hero-card { max-width: 640px; }
+}
+@media (max-width: 560px) {
+  .hero { padding-bottom: 36px; }
+  .hero-visual { min-height: 320px; border-radius: 22px; }
+  .hero-tag { left: 12px; right: 12px; bottom: 12px; padding: 12px; }
+  .hero-card, .card, .panel { border-radius: 20px; }
+  .section-head h2 { font-size: clamp(1.9rem, 9vw, 2.5rem); }
+}
+@media (prefers-reduced-motion: reduce) {
+  body::before, body::after, .brand-mark, .display-text span,
+  .hero-visual img, .meter > span, .bar > span { animation: none !important; }
+  .card, .impact, .info-box, .panel, .action-item, .scenario-card, .credit-item,
+  .button, .icon-btn, .toggle-btn { transition-duration: .01ms !important; }
+}
